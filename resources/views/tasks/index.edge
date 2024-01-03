@@ -1,0 +1,42 @@
+@layout('layouts/app')
+@section('content')
+<div class="w-1/2 mx-auto">
+  <div class=" bg-white w-full flex mt-20 justify-center items-center h-20 shadow-xl rounded">
+    <form action="/tasks" method="post">
+      {{ csrfField() }}
+      <div class="flex justify-center gap-6 items-center">
+        <input type="text" name="title" placeholder="What need to be done"
+          class="border border-gray-500 {{ flashMessages.has('errors.title') ? 'border-red-500' : '' }} rounded-xl h-14 w--96 pl-4"
+          id="">
+        <button type="submit" class="bg-black w-24 h-10 rounded-2xl  shadow text-sm text-white font-bold">Add</button>
+      </div>
+      @if(flashMessages.has('errors.title'))
+      <p class="text-red-600 text-xl uppercase">{{ flashMessages.get('errors.title') }}</p>
+      @end
+    </form>
+
+  </div>
+  @if(flashMessages.has('notification'))
+  <div class="bg-green-400 flex items-center h-10 mx-auto justify-center w-full">
+    <p class="text-white font-bold text-base">{{ flashMessages.get('notification') }}</p>
+  </div>
+  @end
+  <div class="mt-10 bg-white w-5/6 p-5 space-y-4">
+    @each(task in tasks)
+    <div class="flex justify-between  h-10 border-b">
+      <form action="{{ `/tasks/${task.id}?_method=PATCH` }}" method="post">
+        {{ csrfField() }}
+        <input type="checkbox" name="completed" onchange="this.form.submit()" {{ task.is_completed ? 'checked' : '' }}>
+      </form>
+      <h2 class="text-lg font-semibold @class(['text-green-600', 'text-black'], task.is_complete)">{{ task.title }}</h2>
+      <div class="flex gap-2 items-center">
+        <form action="{{ `/tasks/${task.id}?_method=DELETE` }}" method="post">
+          {{ csrfField() }}
+          <button type="submit" class="bg-red-500 text-white">delete</button>
+        </form>
+      </div>
+    </div>
+    @end
+  </div>
+</div>
+@end

@@ -1,0 +1,24 @@
+<nav class="h-16 bg-red-600 w-full shadow-xl">
+  <div class="flex justify-between h-full mx-auto items-center container">
+    <h2 class="text-white font-bold text-2xl italic">Task App</h2>
+    <div class="text-white text-xl font-semibold flex gap-4">
+      <a href="/about" class="text-white">About</a>
+      <a href="/contact" class="text-white">Contact</a>
+    </div>
+    <div class="flex gap-4">
+      @if(auth.isLoggedIn)
+      <p class="text-white font bold">{{ auth.user.name }}</p>
+      <button onclick="event.preventDefault(); document.getElementById('logout').submit()"
+        class="bg-white border h-8 w-36 text-sm text-red-800 font-bold capitalize">logout</button>
+      <form id="logout" action="/logout" method="post">
+        {{ csrfField() }}
+      </form>
+      @else
+      <a href="/register">
+        <button class="bg-white border h-8 w-36 text-sm text-red-800 font-bold capitalize">register</button></a>
+      <a href="/login">
+        <button class="bg-white border h-8 w-36 text-sm text-red-800 font-bold capitalize">log in</button></a>
+      @end
+    </div>
+  </div>
+</nav>
