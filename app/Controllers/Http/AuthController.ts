@@ -1,16 +1,14 @@
 // import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-import { HttpContext } from "@adonisjs/core/build/standalone";
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
-import { validator } from '../../../config/app';
 import User from "App/Models/User";
 
 export default class AuthController {
-  public showRegister({ view }: HttpContext) {
+  public showRegister({ view }) {
     return view.render('auth/register')
   }
 
-  public async register({ request, auth, response }: HttpContextContract) {
+  public async register({ request, auth, response }) {
     const validation = schema.create({
       name: schema.string({ trim: true }),
       email: schema.string({ trim: true }, [
@@ -34,17 +32,17 @@ export default class AuthController {
     return response.redirect('/')
   }
 
-  public async logout({ auth, response }: HttpContextContract) {
+  public async logout({ auth, response }) {
     await auth.logout()
 
     return response.redirect('/')
   }
 
-  public showLogin({ view }: HttpContextContract) {
+  public showLogin({ view }) {
     return view.render('auth/login')
   }
 
-  public async login({ request, auth, session, response }: HttpContextContract) {
+  public async login({ request, auth, session, response }) {
     const { email, password } = request.all()
 
     try {

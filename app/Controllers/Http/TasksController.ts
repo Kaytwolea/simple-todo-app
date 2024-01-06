@@ -3,22 +3,19 @@
 // import { HttpContext } from '@adonisjs/core/build/standalone';
 import Task from 'App/Models/Task'
 import { schema, rules } from '@ioc:Adonis/Core/Validator'
-import { HttpContext } from '@adonisjs/core/build/standalone'
-import PostsController from './PostsController'
-import User from '../../Models/User';
+
 
 export default class TasksController {
-  public async index({ view, auth }: HttpContextContract) {
+  public async index({ view, auth }) {
     const user = auth.user
     await user?.preload('tasks')
-    const tasks = await Task.all()
     return view.render('tasks/index', { tasks: user?.tasks })
   }
 
   /**
    * async store
 { request, response }: HttpContextContract   */
-  public async store({ request, response, session, auth }: HttpContextContract) {
+  public async store({ request, response, session, auth }) {
     const validationSchema = schema.create({
       title: schema.string({ trim: true }, [
         rules.maxLength(255),
@@ -35,7 +32,7 @@ export default class TasksController {
 
     await Task.create({
       title: validatedData.title,
-      user_id: auth.user.id,
+      userId: auth.user.id,
     })
 
     session.flash('notification', 'Task created successfully')
@@ -43,7 +40,7 @@ export default class TasksController {
     return response.redirect('back')
   }
 
-  public async update({ request, response, session, params }: HttpContextContract) {
+  public async update({ request, response, session, params }) {
     const task = await Task.findOrFail(params.id)
     task.is_completed = !!request.input('completed')
     await task.save()
@@ -52,7 +49,7 @@ export default class TasksController {
     return response.redirect('back')
   }
 
-  public async destroy({ params, session, response }: HttpContext) {
+  public async destroy({ params, session, response }) {
     const task = await Task.findOrFail(params.id)
 
     await task.delete()
