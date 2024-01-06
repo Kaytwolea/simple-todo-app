@@ -43,7 +43,10 @@ const databaseConfig: DatabaseConfig & { orm: Partial<OrmConfig> } = {
         password: Env.get('MYSQL_PASSWORD', ''),
         database: Env.get('MYSQL_DB_NAME'),
       },
+      healthCheck: false,
+			debug: false,
     },
+
   },
 
   /*
@@ -58,6 +61,8 @@ const databaseConfig: DatabaseConfig & { orm: Partial<OrmConfig> } = {
   | - Or define a custom function to compute the primary key for a given model.
   |
   */
+  orm: {
+  },
 }
 
 export default databaseConfig
